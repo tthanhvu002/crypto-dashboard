@@ -1,0 +1,25 @@
+.info-component{
+    margin: 30px 50px;
+}
+.grey-wrapper{
+    background-color: var(--darkgrey);
+    border-radius: 1rem;
+    margin: 1rem 3rem;
+    padding: 1rem;
+}
+.info-component h1 {
+    font-size: 1.2rem;
+    margin: 0;
+    text-align: left;
+}
+.info-p {
+    text-align: left;
+}
+.info-p a {
+    text-decoration: underline;
+}
+
+.info-p a:hover {
+    color: var(--blue) !important;
+    transition: all 0.3s;
+}
