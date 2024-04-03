@@ -12,6 +12,8 @@ import { getPrices } from "../functions/getCoinPrices";
 import { getCoinData } from "../functions/getCoinData";
 import SelectDays from "../components/Coin/SelectDays";
 import PriceType from "../components/Coin/PriceType";
+
+
 function CoinPage() {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -29,6 +31,7 @@ function CoinPage() {
     if (prices.length > 0) {
       settingChartData(setChartData, prices);
       setIsLoading(false);
+      
     }
   };
 
@@ -55,6 +58,7 @@ function CoinPage() {
     if (coinData) {
       const prices = await getPrices(id, days, priceType, setError);
       if (prices) {
+
         settingChartData(setChartData, prices);
         setIsLoading(false);
       }
@@ -62,6 +66,7 @@ function CoinPage() {
   };
   return (
     <div>
+    
       <Header />{" "}
       {isLoading ? (
         <Loader />

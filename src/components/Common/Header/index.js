@@ -10,7 +10,6 @@ function Header() {
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("theme") === "dark" ? true : false
   );
-
   useEffect(() => {
     if (localStorage.getItem("theme") === "dark") {
       setDark();
@@ -48,9 +47,7 @@ function Header() {
           <p className="link">Home</p>
         </Link>
 
-        <Link to="/watchlist">
-          <p className="link">Watchlist</p>
-        </Link>
+       
         <Link className="dashboard-btn" to="/dashboard">
           <Button text={"Dashboard"} />
         </Link>

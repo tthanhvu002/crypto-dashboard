@@ -5,6 +5,7 @@ export const getCoinData = (id, setError) => {
     .get(`https://api.coingecko.com/api/v3/coins/${id}`)
     .then((response) => {
       if (response.data) {
+        console.log(response.data);
         return response.data;
       }
     })
