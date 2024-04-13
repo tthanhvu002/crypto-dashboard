@@ -7,6 +7,7 @@ const Home  = () => {
             <Header />
             <MainComponent />
             <Footer />
+            
          </div>
     )
 }

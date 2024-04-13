@@ -23,11 +23,9 @@ function DashboardPage() {
     let prevIndex = (value - 1) * 10;
     setPaginatedCoins(coins.slice(prevIndex, prevIndex + 10));
   };
-  console.log('re-render')
   const onSearchChange = (value) => {
     setSearch(value);
   };
-  console.log(coins);
   let filteredCoins = coins.filter(
     (coin) =>
       coin.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -35,7 +33,7 @@ function DashboardPage() {
   );
 
   const handleChangeSortType = async (event, newType) => {
-    setSortType(newType);
+    setSortType(newType.props.value);
     getListCoin(sortType);
   };
 
@@ -65,7 +63,16 @@ function DashboardPage() {
     }
    
   }
-  
+  function sortByMarketCap(data) {
+    if(reverse) {
+
+      return data.sort((a, b) => b.market_cap - a.market_cap);
+    } else{
+      return data.sort((a, b) => a.market_cap - b.market_cap);
+
+    }
+    
+  }
   function sortByVolume(data) {
     if(reverse) {
 
@@ -79,23 +86,29 @@ function DashboardPage() {
   const getListCoin = async (sortType) => {
     axios
       .get(
-        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h&locale=en"
+        "https://api-dacn.onrender.com/bitcoin"
       )
       .then(function (response) {
         // handle success
         let data = [];
-        console.log(` ${data}`);
         switch (sortType) {
           case "price":
             data = sortByPrice(response.data);
             break;
           case "change":
             data = sortByChange(response.data);
+            break
+          case "volume":
+            data = sortByVolume(response.data);
+            break
+          case "marketcap":
+            data = sortByMarketCap(response.data);
+            break
           default:
             break;
         }
 
-        setCoins(response.data);
+        setCoins(data);
         setPaginatedCoins(response.data.slice(0, 10));
         setIsLoading(false);
       })
