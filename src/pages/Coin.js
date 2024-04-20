@@ -12,38 +12,53 @@ import { getPrices } from "../functions/getCoinPrices";
 import { getCoinData } from "../functions/getCoinData";
 import SelectDays from "../components/Coin/SelectDays";
 import PriceType from "../components/Coin/PriceType";
-
+import * as tf from "@tensorflow/tfjs";
 
 function CoinPage() {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [coinData, setCoinData] = useState();
   const [error, setError] = useState(false);
-  const [coinPrices, setCoinPrices] = useState();
   const [days, setDays] = useState(7);
   const [chartData, setChartData] = useState({ labels: [], datasets: [{}] });
-  const [priceType, setPriceType] = useState("prices");
+  const [priceType, setPriceType] = useState("price");
 
   const handleChangeSelectDays = async (event) => {
-    setIsLoading(true);
     setDays(event.target.value);
-    const prices = await getPrices(id, event.target.value, priceType, setError);
-    if (prices.length > 0) {
+    const prices = await getPrices(
+      id,
+      event.target.value,
+      priceType,
+      setError
+    );
+    if(priceType === 'predict') {
+      setChartData((prevChartData) => ({
+        ...prevChartData,
+        datasets: [
+          ...prevChartData.datasets,
+          {
+            label: "Predictions",
+            data: prices.map((prediction) => [
+              prediction.timestamp,
+              prediction.price,
+            ]),
+            // add other properties like backgroundColor, borderColor etc.
+          },
+        ],
+      }));
+    } 
+    if (prices.length > 0 && priceType !== 'predict') {
       settingChartData(setChartData, prices);
-      setIsLoading(false);
-      
     }
   };
 
   const handleChangePriceType = async (event, newType) => {
-    setIsLoading(true);
-
     setPriceType(newType);
     const prices = await getPrices(id, days, newType, setError);
+  
+      
     if (prices.length > 0) {
-      console.log(newType);
       settingChartData(setChartData, prices);
-      setIsLoading(false);
     }
   };
   useEffect(() => {
@@ -51,28 +66,23 @@ function CoinPage() {
       getData();
     }
   }, id);
+
   const getData = async () => {
-    setIsLoading(true);
     let coinData = await getCoinData(id, setError);
     coinObject(setCoinData, coinData);
     if (coinData) {
       const prices = await getPrices(id, days, priceType, setError);
       if (prices) {
-
         settingChartData(setChartData, prices);
-        setIsLoading(false);
       }
     }
   };
+
+ 
   return (
     <div>
-    
       <Header />{" "}
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <CoinInfo heading={coinData.name} desc={coinData.desc} />
-      )}
+      {coinData && <CoinInfo heading={coinData.name} desc={coinData.desc} />}
       <div className="grey-wrapper">
         <SelectDays
           days={days}
