@@ -6,7 +6,11 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useState } from "react";
-export default function SelectDays({ days, handleChangeSelectDays }) {
+export default function SelectDays({
+  days,
+  handleChangeSelectDays,
+  priceType,
+}) {
   return (
     <div className="select-days">
       <InputLabel
@@ -38,10 +42,18 @@ export default function SelectDays({ days, handleChangeSelectDays }) {
         }}
       >
         <MenuItem value={7}>7</MenuItem>
-        <MenuItem value={30}>30</MenuItem>
-        <MenuItem value={60}>60</MenuItem>
-        <MenuItem value={90}>90</MenuItem>
-        <MenuItem value={360}>365</MenuItem>
+        <MenuItem value={30} disabled={priceType === "predict"}>
+          30
+        </MenuItem>
+        <MenuItem value={60} disabled={priceType === "predict"}>
+          60
+        </MenuItem>
+        <MenuItem value={90} disabled={priceType === "predict"}>
+          90
+        </MenuItem>
+        <MenuItem value={360} disabled={priceType === "predict"}>
+          365
+        </MenuItem>
       </Select>
     </div>
   );

@@ -54,8 +54,14 @@ function CoinPage() {
 
   const handleChangePriceType = async (event, newType) => {
     setPriceType(newType);
-    const prices = await getPrices(id, days, newType, setError);
-  
+    let prices = [];
+    if (newType == 'predict') {
+      prices = await getPrices(id, 7, newType, setError);
+      setDays(7);
+    } else{
+      prices = await getPrices(id, days, newType, setError);
+
+    }
       
     if (prices.length > 0) {
       settingChartData(setChartData, prices);
@@ -87,6 +93,7 @@ function CoinPage() {
         <SelectDays
           days={days}
           handleChangeSelectDays={handleChangeSelectDays}
+          priceType={priceType}
         />
         <PriceType
           priceType={priceType}

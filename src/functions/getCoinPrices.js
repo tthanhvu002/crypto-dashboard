@@ -1,8 +1,9 @@
 import axios from "axios";
 import * as tf from "@tensorflow/tfjs";
+
 import { useState } from "react";
+
 export const getPrices = (id, days, priceType, setError) => {
-  
   const predictPrices = (prices) => {
     console.log("prices in predictPrices: ", prices);
 
@@ -42,7 +43,7 @@ export const getPrices = (id, days, priceType, setError) => {
       return timestampedPredictions;
     });
   };
-  
+
   const prices = axios
     .get(
       `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${days}&interval=daily`
